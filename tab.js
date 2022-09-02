@@ -1,7 +1,7 @@
 //https://www.w3schools.com/howto/howto_js_tabs.asp
 
-  var tempAddress;
-  var tempName;
+var tempAddress;
+var tempName;
 
 export default function openCity(evt, cityName, _tokenAddress='', _tokenName='') {
   // Declare all variables

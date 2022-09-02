@@ -36,18 +36,12 @@ const connectWallet = async () => {
 
 const getUserWallet = async () => {
   let userAddress = await signer.getAddress();
-  //   connectedWallet = userAddress;
   updateUserAddress(userAddress);
-  //   console.log(connectedWallet, "connected wallet");
 };
 
 export default {
   openTab,
 };
-
-// elements
-// const button = document.getElementById("connectBtn");
-// const userAddress = document.getElementById("userAddress");
 
 // Event Listeners
 connectBtn.addEventListener("click", connectWallet);
@@ -75,14 +69,12 @@ function tokenTemplateUpdate(name, symbol, img, totalSupply, userBalance, tokenA
 async function getTokenDetails(id) {
   await connectWallet();
   loader.innerText = "Loading...";
-  // const token = await useContract(tokenAddress, abi);
   const token = await useContract(list.tokens[id].address, abi);
   let userAddress = await signer.getAddress();
 
   try {
     const [name, symbol, totalSupply, userBalance] = await Promise.all([token.name(), token.symbol(), token.totalSupply(), token.balanceOf(userAddress)]);
     let img = list.tokens[id].logoURI;
-    // console.log(name, symbol, img, Number(totalSupply), userBalance );
     return { name, symbol, img, totalSupply: Number(totalSupply), userBalance };
   } catch (error) {
     errored.innerText = "Error Occurred!";
@@ -101,13 +93,9 @@ async function InitData() {
     token.innerHTML = template;
   });
   
-  
 }
 
-
 InitData();
-
-// tokenDetails();
 
 /***
  * @amt - Number
@@ -115,11 +103,7 @@ InitData();
  **/
 
 async function sendToken(address, amt, tempAddress) {
-  console.log(tempAddress);
-  console.log(tempName);
   const contract = useContract(tempAddress, abi, true);
-  // console.log(contract);
-  // const amount = new etherjs.utils.parseEthers();
   const decimal = await getDecimals();
   const parseUnit = new etherjs.utils.parseUnits(amt, decimal);
   const txn = await contract.transfer(address, parseUnit);
