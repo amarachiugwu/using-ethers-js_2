@@ -1,14 +1,15 @@
 import abi from "./abi.js";
 import openTab from "./tab.js";
+import list from "./tokenList.js";
 const { ethers: etherjs } = ethers;
 
-const rpcUrl = "https://goerli.infura.io/v3/ba80361523fe423bb149026a490266f0";
+const rpcUrl = "https://rinkeby.infura.io/v3/e92c38757159497d97aad034c8e59232";
 const signerProvider = new etherjs.providers.Web3Provider(window.ethereum);
 
 const provider = new etherjs.providers.JsonRpcProvider(rpcUrl);
 
 const signer = signerProvider.getSigner();
-const tokenAddress = "0xC770d227Eb937D7D3A327e68180772571C24525F";
+const tokenAddress = "0x7637953dbE16f94647F12897644FCc4b1b3F2354";
 
 const useContract = (
   address = tokenAddress,
@@ -55,31 +56,34 @@ function updateUserAddress(address) {
   userAddress.innerText = address;
 }
 
-function tokenTemplateUpdate(name, symbol, totalSupply, userBalance) {
-  return `<div class="flex justify-between items-center">
-    <div>
-        <div class="flex items-center">
-            <div class="p-2 token-thumbnail w-10 h-10"> 
-                <img src="https://bafybeiekvvr4iu4bqxm6de5tzxa3yfwqptmsg3ixpjr4edk5rkp3ddadaq.ipfs.dweb.link/" alt="token-img" />  </div>
-            <div>
-                <p class="font-semibold">${name} - ${symbol} </p>
-                <p>Total Supply:${totalSupply}</p>
-            </div>
-        </div>
-    </div>
-    <div>${userBalance}</div>
-</div>`;
+function tokenTemplateUpdate(name, symbol, img, totalSupply, userBalance) {
+  return `<div onclick="openCity(event, 'Paris')" style="cursor:pointer" class="flex justify-between items-center">
+      <div>
+          <div class="flex items-center">
+              <div class="p-2 token-thumbnail w-10 h-10"> 
+                  <img src=${img} />  </div>
+              <div>
+                  <p class="font-semibold">${name} - ${symbol} </p>
+                  <p>Total Supply:${totalSupply}</p>
+              </div>
+          </div>
+      </div>
+      <div>${userBalance}</div>
+    </div>`;
 }
 
-async function getTokenDetails() {
+async function getTokenDetails(id) {
   await connectWallet();
   loader.innerText = "Loading...";
-  const token = await useContract(tokenAddress, abi);
+  // const token = await useContract(tokenAddress, abi);
+  const token = await useContract(list.tokens[id].address, abi);
   let userAddress = await signer.getAddress();
 
   try {
     const [name, symbol, totalSupply, userBalance] = await Promise.all([token.name(), token.symbol(), token.totalSupply(), token.balanceOf(userAddress)]);
-    return { name, symbol, totalSupply: Number(totalSupply), userBalance };
+    let img = list.tokens[id].logoURI;
+    // console.log(name, symbol, img, Number(totalSupply), userBalance );
+    return { name, symbol, img, totalSupply: Number(totalSupply), userBalance };
   } catch (error) {
     errored.innerText = "Error Occurred!";
     console.log("error occurred", error);
@@ -89,9 +93,15 @@ async function getTokenDetails() {
 }
 
 async function InitData() {
-  const { name, symbol, totalSupply, userBalance } = await getTokenDetails();
-  const template = tokenTemplateUpdate(name, symbol, totalSupply / 10 ** 18, `${userBalance / 10 ** 18} ${symbol}`);
-  token.innerHTML = template;
+
+  var template = "";
+    list.tokens.map(async (arrItem, index) => {
+    const { name, symbol, img, totalSupply, userBalance } =  await getTokenDetails(index);
+    template += tokenTemplateUpdate(name, symbol, img, totalSupply / 10 ** 18, `${userBalance / 10 ** 18} ${symbol}`);
+    token.innerHTML = template;
+  });
+  
+  
 }
 
 

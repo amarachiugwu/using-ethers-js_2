@@ -1,10 +1,11 @@
 // https://github.com/Uniswap/token-lists/blob/main/test/schema/example.tokenlist.json
-export default list = {
+export default {
   name: "My Token List",
 
   tokens: [
     {
       chainId: 4,
+      id:0,
       address: "0x7637953dbE16f94647F12897644FCc4b1b3F2354",
       symbol: "TT1",
       name: "TestToken1",
@@ -15,6 +16,7 @@ export default list = {
     },
     {
       chainId: 4,
+      id:1,
       address: "0xd07C703243092887C2970eb13Db8c0079dC5e3D4",
       symbol: "TT2",
       name: "TestToken2",
@@ -25,6 +27,7 @@ export default list = {
     },
     {
       chainId: 4,
+      id:2,
       address: "0x812b8EEb7F94D5867420A7D8298E3EA0dD7C3014",
       symbol: "TT3",
       name: "TestToken3",
@@ -35,6 +38,7 @@ export default list = {
     },
     {
       chainId: 4,
+      id:3,
       address: "0x13800E8cD613F29aae41c4498889Df47E1312366",
       symbol: "TT4",
       name: "TestToken4",
@@ -45,6 +49,7 @@ export default list = {
     },
     {
       chainId: 4,
+      id:4,
       address: "0xe8aC99B07F4122b8C4c78f8f5dF0a885F9F2B512",
       symbol: "TT5",
       name: "TestToken5",
