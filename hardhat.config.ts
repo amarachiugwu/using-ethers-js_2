@@ -11,7 +11,7 @@ const ALCHEMY_GOERLI_API_KEY_URL = process.env.ALCHEMY_GOERLI_API_KEY_URL;
 
 const INFURA_ROPSTEN_API_KEY_URL = process.env.INFURA_ROPSTEN_API_KEY_URL;
 
-const ACCOUNT_PRIVATE_KEY = process.env.ACCOUNT_PRIVATE_KEY;
+const ACCOUNT_PRIVATE_KEY1 = process.env.ACCOUNT_PRIVATE_KEY1;
 
 // const API_TOKEN = process.env.API_TOKEN;
 
@@ -28,15 +28,15 @@ module.exports = {
     },
     rinkeby: {
       url: ALCHEMY_RINKEBY_API_KEY_URL,
-      accounts: [ACCOUNT_PRIVATE_KEY],
+      accounts: [ACCOUNT_PRIVATE_KEY1],
     },
     ropsten: {
       url: INFURA_ROPSTEN_API_KEY_URL,
-      accounts: [ACCOUNT_PRIVATE_KEY],
+      accounts: [ACCOUNT_PRIVATE_KEY1],
     },
     goerli: {
       url: ALCHEMY_GOERLI_API_KEY_URL,
-      accounts: [ACCOUNT_PRIVATE_KEY],
+      accounts: [ACCOUNT_PRIVATE_KEY1],
     },
     // mainnet: {
     //   url: ALCHEMY_MAINNET_API_KEY_URL,
