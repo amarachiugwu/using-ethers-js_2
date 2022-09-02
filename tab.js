@@ -1,8 +1,14 @@
 //https://www.w3schools.com/howto/howto_js_tabs.asp
 
-export default function openCity(evt, cityName) {
+  var tempAddress;
+  var tempName;
+
+export default function openCity(evt, cityName, _tokenAddress='', _tokenName='') {
   // Declare all variables
   let i, tabcontent, tablinks;
+
+  tempAddress = _tokenAddress;
+  tempName = _tokenName;
 
   // Get all elements with class="tabcontent" and hide them
   tabcontent = document.getElementsByClassName("tabcontent");
@@ -20,5 +26,7 @@ export default function openCity(evt, cityName) {
   document.getElementById(cityName).style.display = "block";
   evt.currentTarget.className += " active";
 }
+
+export {tempAddress, tempName};
 
 window.openCity = openCity;

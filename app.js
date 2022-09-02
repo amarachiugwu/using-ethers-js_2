@@ -1,5 +1,5 @@
 import abi from "./abi.js";
-import openTab from "./tab.js";
+import openTab, {tempAddress, tempName} from "./tab.js";
 import list from "./tokenList.js";
 const { ethers: etherjs } = ethers;
 
@@ -9,10 +9,10 @@ const signerProvider = new etherjs.providers.Web3Provider(window.ethereum);
 const provider = new etherjs.providers.JsonRpcProvider(rpcUrl);
 
 const signer = signerProvider.getSigner();
-const tokenAddress = "0x7637953dbE16f94647F12897644FCc4b1b3F2354";
+// const tokenAddress = "0x7637953dbE16f94647F12897644FCc4b1b3F2354";
 
 const useContract = (
-  address = tokenAddress,
+  address = tempAddress,
   contractAbi = abi,
   isSigner = false
 ) => {
@@ -56,8 +56,8 @@ function updateUserAddress(address) {
   userAddress.innerText = address;
 }
 
-function tokenTemplateUpdate(name, symbol, img, totalSupply, userBalance) {
-  return `<div onclick="openCity(event, 'Paris')" style="cursor:pointer" class="flex justify-between items-center">
+function tokenTemplateUpdate(name, symbol, img, totalSupply, userBalance, tokenAddress) {
+  return `<div onclick="openCity(event, 'Paris', '${tokenAddress}', '${symbol}')" style="cursor:pointer" class="flex justify-between items-center">
       <div>
           <div class="flex items-center">
               <div class="p-2 token-thumbnail w-10 h-10"> 
@@ -97,7 +97,7 @@ async function InitData() {
   var template = "";
     list.tokens.map(async (arrItem, index) => {
     const { name, symbol, img, totalSupply, userBalance } =  await getTokenDetails(index);
-    template += tokenTemplateUpdate(name, symbol, img, totalSupply / 10 ** 18, `${userBalance / 10 ** 18} ${symbol}`);
+    template += tokenTemplateUpdate(name, symbol, img, totalSupply / 10 ** 18, `${userBalance / 10 ** 18} ${symbol}`, arrItem.address);
     token.innerHTML = template;
   });
   
@@ -113,8 +113,11 @@ InitData();
  * @amt - Number
  * @receiver - string
  **/
-async function sendToken(address, amt) {
-  const contract = useContract(tokenAddress, abi, true);
+
+async function sendToken(address, amt, tempAddress) {
+  console.log(tempAddress);
+  console.log(tempName);
+  const contract = useContract(tempAddress, abi, true);
   // console.log(contract);
   // const amount = new etherjs.utils.parseEthers();
   const decimal = await getDecimals();
@@ -125,7 +128,7 @@ async function sendToken(address, amt) {
   window.alert(`transaction pending....`);
   const confirm = await txn.wait();
   console.log("transaction ends", confirm);
-  window.alert(`${amt} CLT sent to ${address}`);
+  window.alert(`${amt} ${tempName} sent to ${address}`);
   sendTransaction.innerText = "Send";
 }
 
