@@ -3,15 +3,17 @@ import openTab, {tempAddress, tempName} from "./tab.js";
 import list from "./tokenList.js";
 const { ethers: etherjs } = ethers;
 
-const rpcUrl = "https://rinkeby.infura.io/v3/e92c38757159497d97aad034c8e59232";
+const rpcUrl = "https://goerli.infura.io/v3/e92c38757159497d97aad034c8e59232"
 const signerProvider = new etherjs.providers.Web3Provider(window.ethereum);
 
 const provider = new etherjs.providers.JsonRpcProvider(rpcUrl);
 
 const signer = signerProvider.getSigner();
 
-const network = await provider.getNetwork();
-const chainId = network.chainId;
+const getNetwork = await provider.getNetwork();
+const network = getNetwork.name;
+const chainId = getNetwork.chainId;
+console.log(network);
 
 
 const useContract = (
@@ -72,14 +74,14 @@ function tokenTemplateUpdate(name, symbol, img, totalSupply, userBalance, tokenA
 async function getTokenDetails(id) {
   await connectWallet();
   loader.innerText = "Loading...";
-  const token = await useContract(list.tokens[id].address, abi);
+  const token = await useContract(list[network][id].address, abi);
   let userAddress = await signer.getAddress();
 
   try {
     const [totalSupply, userBalance] = await Promise.all([ token.totalSupply(), token.balanceOf(userAddress)]);
-    let img = list.tokens[id].logoURI;
-    let name = list.tokens[id].name;
-    let symbol = list.tokens[id].symbol;
+    let img = list[network][id].logoURI;
+    let name = list[network][id].name;
+    let symbol = list[network][id].symbol;
     return { name, symbol, img, totalSupply: Number(totalSupply), userBalance };
   } catch (error) {
     errored.innerText = "Error Occurred!";
@@ -91,8 +93,14 @@ async function getTokenDetails(id) {
 
 async function InitData() {
 
-  var template = "";
-    list.tokens.map(async (arrItem, index) => {
+  var template = "";  
+let tempNet = list[network];
+  
+console.log(tempNet);
+
+
+    list[network].map(async (arrItem, index) => {
+    
     const { name, symbol, img, totalSupply, userBalance } =  await getTokenDetails(index);
     template += tokenTemplateUpdate(name, symbol, img, totalSupply / 10 ** 18, `${userBalance / 10 ** 18} ${symbol}`, arrItem.address);
     token.innerHTML = template;
