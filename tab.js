@@ -3,7 +3,7 @@
 var tempAddress;
 var tempName;
 
-export default function openCity(evt, cityName, _tokenAddress='', _tokenName='') {
+export default function openCity(evt, cityName, _tokenAddress='0x7637953dbE16f94647F12897644FCc4b1b3F2354', _tokenName='TT1') {
   // Declare all variables
   let i, tabcontent, tablinks;
 

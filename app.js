@@ -9,7 +9,10 @@ const signerProvider = new etherjs.providers.Web3Provider(window.ethereum);
 const provider = new etherjs.providers.JsonRpcProvider(rpcUrl);
 
 const signer = signerProvider.getSigner();
-// const tokenAddress = "0x7637953dbE16f94647F12897644FCc4b1b3F2354";
+
+const network = await provider.getNetwork();
+const chainId = network.chainId;
+
 
 const useContract = (
   address = tempAddress,
@@ -73,8 +76,10 @@ async function getTokenDetails(id) {
   let userAddress = await signer.getAddress();
 
   try {
-    const [name, symbol, totalSupply, userBalance] = await Promise.all([token.name(), token.symbol(), token.totalSupply(), token.balanceOf(userAddress)]);
+    const [totalSupply, userBalance] = await Promise.all([ token.totalSupply(), token.balanceOf(userAddress)]);
     let img = list.tokens[id].logoURI;
+    let name = list.tokens[id].name;
+    let symbol = list.tokens[id].symbol;
     return { name, symbol, img, totalSupply: Number(totalSupply), userBalance };
   } catch (error) {
     errored.innerText = "Error Occurred!";

@@ -10,3 +10,5 @@ contract TestToken4 is ERC20, Ownable {
 }
 
 // contract rinkeby address : 0x13800E8cD613F29aae41c4498889Df47E1312366
+// contract kovan address : 0x2b5E53dEf9612Fdd447d2224F1C759F8f5988584
+// contract goerli address : 0xb7Dd2D6f2ed70a37e71b0a46679430DA727c0647
